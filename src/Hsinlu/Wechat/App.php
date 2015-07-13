@@ -5,10 +5,22 @@ namespace Hsinlu\Wechat;
 use \Exception;
 use \Closure;
 use OutOfBoundsException;
+
+use Hsinlu\Wechat\Foundation\AccessToken;
+use Hsinlu\Wechat\Foundation\CallbackIP;
+use Hsinlu\Wechat\Foundation\CustomerService;
+use Hsinlu\Wechat\Foundation\UserManager;
+use Hsinlu\Wechat\Foundation\GroupManager;
+use Hsinlu\Wechat\Foundation\Menu;
+use Hsinlu\Wechat\Foundation\ShortUrl;
+use Hsinlu\Wechat\Foundation\Media;
+
 use Hsinlu\Wechat\Results\Result;
 
 class App
 {
+    use AccessToken, CallbackIP, CustomerService, UserManager, GroupManager, Menu, ShortUrl, Media;
+
     /**
      * 应用ID
      * 
@@ -61,7 +73,7 @@ class App
      * @param  mixed $type    消息类型
      * @param  mixed $handler 消息处理程序
      */
-    public function registerHandler($type, $handler)
+    public function on($type, $handler)
     {
     	if (is_array($type)) {
     		foreach ($type as $key => $value) {
@@ -100,6 +112,10 @@ class App
     public function handle($message)
     {
         $type = trim($message->MsgType);
+        // 事件类型时设置为事件类型+具体事件，如event.subscribe
+        if ($type == 'event') {
+            $type .= '.' . trim($message->Event); 
+        }
 
         if (!isset($this->handlers[$type])) {
             throw new OutOfBoundsException(trans('wechat.hanlder_not_available'));
