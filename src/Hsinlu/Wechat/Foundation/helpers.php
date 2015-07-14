@@ -16,6 +16,8 @@ if (!function_exists('http_get')) {
 		$response = $client->get($request);
 
 		switch ($resType) {
+			case 'response':
+				return $response;
 			case 'raw':
 				return $response->content();
 			case 'json':
@@ -47,6 +49,8 @@ if (!function_exists('http_post')) {
 		$response = $client->post($request);
 
 		switch ($resType) {
+			case 'response':
+				return $response;
 			case 'raw':
 				return $response->content();
 			case 'json':

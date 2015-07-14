@@ -13,7 +13,7 @@ trait GroupManager
 	 * 
 	 * @return stdClass 所有分组
 	 */
-	public function getGroups()
+	public function getAllGroup()
 	{
 		$json = http_get([
 				'url' => 'https://api.weixin.qq.com/cgi-bin/groups/get',
@@ -29,6 +29,12 @@ trait GroupManager
 		return $json;
 	}
 
+	/**
+	 * 根据openid获取所在的用户组
+	 * 
+	 * @param  string $openid 用户openid
+	 * @return int       	  用户分组id
+	 */
 	public function getGroupIdByOpenId($openid)
 	{
 		$json = http_post([
@@ -45,7 +51,7 @@ trait GroupManager
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return $json;
+		return $json->groupid;
 	}
 
 	/**
@@ -80,7 +86,7 @@ trait GroupManager
 	 * 
 	 * @param  string $groupid 分组的id
 	 * @param  string $name    分组的名称
-	 * @return stdClass          json
+	 * @return bool            是否修改成功
 	 */
 	public function updateGroupName($groupid, $name)
 	{
@@ -101,7 +107,7 @@ trait GroupManager
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return $json;
+		return true;
 	}
 
 	/**
@@ -134,9 +140,9 @@ trait GroupManager
 	/**
 	 * 移动用户分组
 	 * 
-	 * @param  string or array $openid  用户openid
-	 * @param  string $groupid 分组id
-	 * @return stdClass        json
+	 * @param  string or array $openid  用户openid或用户openid数组
+	 * @param  string $groupid          分组id
+	 * @return bool                     是否移动成功
 	 */
 	public function moveToGroup($openid, $groupid)
 	{
@@ -160,6 +166,6 @@ trait GroupManager
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return $json;
+		return true;
 	}
 }

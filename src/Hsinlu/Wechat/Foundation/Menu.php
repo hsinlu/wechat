@@ -31,18 +31,17 @@ trait Menu
 	}
 
 	/**
-	 * 创建菜单
+	 * 获取任何方式创建的菜单
 	 * 
 	 * @return stdClass json
 	 */
-	public function createMenu($menu)
+	public function getMenuAnyWay()
 	{
-		$json = http_post([
-				'url' => 'https://api.weixin.qq.com/cgi-bin/menu/create',
+		$json = http_get([
+				'url' => 'https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info',
 				'params' => [
 					'access_token' => $this->getAccessToken(),
-				],
-				'content' => $menu,
+				]
 			]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
@@ -51,11 +50,34 @@ trait Menu
 
 		return $json;
 	}
+	
+	/**
+	 * 创建菜单
+	 * 
+	 * @param  string or array $menu  菜单数据
+	 * @return bool                   是否创建成功
+	 */
+	public function createMenu($menu)
+	{
+		$json = http_post([
+				'url' => 'https://api.weixin.qq.com/cgi-bin/menu/create',
+				'params' => [
+					'access_token' => $this->getAccessToken(),
+				],
+				'content' => is_array($menu) || is_object($menu) ? json_encode($menu) : $menu,
+			]);
+
+		if (property_exists($json, 'errcode') && $json->errcode != 0) {
+			throw new WechatException($json->errmsg, $json->errcode);
+		}
+
+		return true;
+	}
 
 	/**
 	 * 删除菜单
 	 * 
-	 * @return stdClass json
+	 * @return bool 是否删除成功
 	 */
 	public function deleteMenu()
 	{
@@ -70,6 +92,6 @@ trait Menu
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return $json;
+		return true;
 	}
 }
