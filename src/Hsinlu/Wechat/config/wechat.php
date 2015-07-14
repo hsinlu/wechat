@@ -11,8 +11,10 @@ return [
 		    'AppSecret' => '应用密钥',
 		   	// 令牌
 		    'Token' => '令牌',
-		    // 服务器地址
-		    'URL' => '服务器地址',
+		    // 消息是否加密 
+		    'Encrypt' => false,
+		    // 消息加解密密钥
+		    'EncodingAESKey' => '消息加解密密钥',
 		],
 	],
 ];

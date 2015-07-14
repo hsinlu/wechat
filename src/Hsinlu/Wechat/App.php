@@ -42,11 +42,16 @@ class App
 	protected $token;
 
     /**
-     * 应用接入url
-     * 
+     * 消息是否加密
+     * @var bool
+     */
+    protected $encrypt;
+
+    /**
+     * 消息加解密密钥
      * @var string
      */
-	protected $url;
+    protected $encodingAESKey;
 
     /**
      * 消息处理程序
@@ -64,7 +69,8 @@ class App
     	$this->app_id = $config['AppID'];
     	$this->app_secret = $config['AppSecret'];
     	$this->token = $config['Token'];
-		$this->url = $config['URL'];
+		$this->encrypt = $config['Encrypt'];
+        $this->encodingAESKey = $config['EncodingAESKey'];
     }
 
     /**
