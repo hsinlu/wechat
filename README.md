@@ -2,11 +2,11 @@
 
 # wechat
 
-基于laravel5.1开发的微信公众平台SDK，支持管理多个微信应用。
+基于laravel5.1开发的微信公众平台SDK，支持管理多个微信应用，旨在于提供简洁优雅的开发体验。
 
 ## 功能
 
-以下是所支持的功能列表，其中打勾的为已完成功能，其他为开发中状态。
+以下是所支持的功能列表，根据微信官方文档分类、命名，其中打勾的为已完成功能，其他为开发中状态。
 
 - [x] 微信接入
 - [x] 获取access_token
@@ -14,15 +14,16 @@
 - [x] 被动接收普通消息
 - [x] 被动接收事件消息
 - [x] 被动回复消息
-- [ ] 客服消息
+- [x] 客服消息
 - [ ] 多客服功能
-- [ ] 群发消息
-- [ ] 模板消息
+- [x] 群发消息
+- [x] 模板消息
+- [x] 获取自动回复规则
 - [ ] 消息加解密
 - [ ] 素材管理
 - [x] 用户管理
 - [x] 自定义菜单管理
-- [ ] 二维码
+- [x] 二维码
 - [x] 长链接转短链接
 - [ ] 数据统计
 - [ ] JS-SDK
@@ -190,5 +191,240 @@ wechat()->on('text', function ($message) {
 
 ```
 > SDK中提供了`wechat_result`方法来帮助构建消息结果类，您仍可以使用`new TextResult([])`形式构建。
+
+### 调用微信接口
+
+#### 获取access token
+
+`getAccessToken()`
+
+`getAccessToken`方法会优先从缓存中获取**access token**，缓存时间为100分钟，如果检测到缓存中不存在**access token**或者缓存过期，将会从微信服务器中重新获取。
+
+```php
+// 返回access token
+wechat()->getAccessToken();
+```
+</br>
+
+`forgetAccessToken()`
+
+该方法会移除缓存中的**access token**，下次获取**access token**将从微信服务器中重新获取。
+
+```php
+// 移除缓存中的access token
+wechat()->forgetAccessToken();
+```
+
+#### 获取微信服务器IP地址
+
+`getCallbackIP()`
+
+`getCallbackIP`方法获取微信服务器IP地址列表。
+
+```php
+// 获取微信服务器IP地址列表
+wechat()->getCallbackIP();
+
+// {
+//		"ip_list":["127.0.0.1","127.0.0.1"]
+// }
+```
+
+#### 客服消息
+
+`addKFAccount()`
+
+`addKFAccount`方法用于添加客服账号。
+
+```php
+// 添加客服账号
+// $account => 'test1@test'
+// $nickname => '客服1'
+// $password => 'pswmd5'
+wechat()->addKFAccount($account, $nickname, $password);
+
+// bool 是否添加成功
+```
+<br />
+
+`modifyKFAccount()`
+
+`modifyKFAccount`方法用于修改客服账号
+
+```php
+// 修改客服账号
+// $account => 'test1@test'
+// $nickname => '客服1'
+// $password => 'pswmd5'
+wechat()->modifyKFAccount($account, $nickname, $password);
+
+// bool 是否修改成功
+```
+<br />
+
+`deleteKFAccount()`
+
+`deleteKFAccount`方法用于删除客服账号
+
+```php
+// 删除客服账号
+// $account => 'test1@test'
+// $nickname => '客服1'
+// $password => 'pswmd5'
+wechat()->deleteKFAccount($account, $nickname, $password);
+
+// bool 是否删除成功
+```
+<br />
+
+`uploadKFAccountAvatar()`
+
+`uploadKFAccountAvatar`方法用于设置客服账号的头像
+
+```php
+// 设置客服帐号的头像
+// $account => 'test1@test'
+// $avatar => '头像文件'
+wechat()->uploadKFAccountAvatar($account, $avatar);
+
+// bool 是否设置成功
+```
+<br />
+
+`getAllKFAccount()`
+
+`getAllKFAccount`用于获取所有客服账号
+
+```php
+// 获取所有客服账号
+// $account => 'test1@test'
+// $avatar => '头像文件'
+wechat()->getAllKFAccount();
+
+/*
+{
+    "kf_list": [
+        {
+            "kf_account": "test1@test", 
+            "kf_nick": "ntest1", 
+            "kf_id": "1001"
+            "kf_headimgurl": " http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjfUS8Ym0GSaLic0FD3vN0V8PILcibEGb2fPfEOmw/0"
+        }, 
+        {
+            "kf_account": "test2@test", 
+            "kf_nick": "ntest2", 
+            "kf_id": "1002"
+            "kf_headimgurl": " http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjfUS8Ym0GSaLic0FD3vN0V8PILcibEGb2fPfEOmw /0"
+        }, 
+        {
+            "kf_account": "test3@test", 
+            "kf_nick": "ntest3", 
+            "kf_id": "1003"
+            "kf_headimgurl": " http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjfUS8Ym0GSaLic0FD3vN0V8PILcibEGb2fPfEOmw /0"
+        }
+    ]
+}
+*/
+```
+<br />
+
+`sendKFMessage()`
+
+`sendKFMessage`用于发送客服消息
+
+```php
+// 发送客服消息
+/* $message => '{
+    		"touser":"OPENID",
+    		"msgtype":"text",
+    		"text":
+    		{
+         		"content":"Hello World"
+    		}
+	}'
+	
+	$message可以为json字符串、json对象、数组，为对象或数组时会自动转化为json字符串。
+*/
+// 具体参见：http://mp.weixin.qq.com/wiki/1/70a29afed17f56d537c833f89be979c9.html
+wechat()->sendKFMessage($message);
+
+// bool 是否发送成功
+```
+#### 群发消息
+
+`uploadNews()`
+
+`uploadNews`方法用于上传图文消息素材
+
+```php
+/*
+$articles = '{
+   "articles": [
+		 {
+          "thumb_media_id":"qI6_Ze_6PtV7svjolgs-rN6stStuHIjs9_DidOHaj0Q-mwvBelOXCFZiq2OsIU-p",
+          "author":"xxx",
+			  "title":"Happy Day",
+			  "content_source_url":"www.qq.com",
+			  "content":"content",
+			  "digest":"digest",
+          "show_cover_pic":"1"
+		 },
+		 {
+         "thumb_media_id":"qI6_Ze_6PtV7svjolgs-rN6stStuHIjs9_DidOHaj0Q-mwvBelOXCFZiq2OsIU-p",
+         "author":"xxx",
+			 "title":"Happy Day",
+			 "content_source_url":"www.qq.com",
+			 "content":"content",
+			 "digest":"digest",
+         "show_cover_pic":"0"
+		 }
+   ]
+}'
+
+$articles可以为json字符串、json对象、数组，为对象或数组时会自动转化为json字符串。
+*/
+wechat()->uploadNews($articles);
+
+/*
+{
+   "type":"news",
+   "media_id":"CsEf3ldqkAYJAU6EJeIkStVDSvffUJ54vqbThMgplD-VJXXof6ctX5fI6-aYyUiQ",
+   "created_at":1391857799
+}
+*/
+```
+<br />
+
+`massSendByGroup()`
+
+`massSendByGroup`方法用于给分组群发消息。
+
+```php
+/*
+$message = '{
+   "filter":{
+      "is_to_all":false
+      "group_id":"2"
+   },
+   "text":{
+      "content":"CONTENT"
+   },
+    "msgtype":"text"
+}'
+
+$message可以为json字符串、json对象、数组，为对象或数组时会自动转化为json字符串。
+*/
+// 具体参见：http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html
+
+wechat()->massSendByGroup($message);
+
+/*
+{
+   "errcode":0,
+   "errmsg":"send job submission success",
+   "msg_id":34182
+}
+*/
+```
 
 

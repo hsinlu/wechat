@@ -9,17 +9,22 @@ use OutOfBoundsException;
 use Hsinlu\Wechat\Foundation\AccessToken;
 use Hsinlu\Wechat\Foundation\CallbackIP;
 use Hsinlu\Wechat\Foundation\CustomerService;
+use Hsinlu\Wechat\Foundation\MassSend;
+use Hsinlu\Wechat\Foundation\Template;
+use Hsinlu\Wechat\Foundation\AutoReplyRule;
 use Hsinlu\Wechat\Foundation\UserManager;
 use Hsinlu\Wechat\Foundation\GroupManager;
 use Hsinlu\Wechat\Foundation\Menu;
 use Hsinlu\Wechat\Foundation\ShortUrl;
+use Hsinlu\Wechat\Foundation\QRCode;
 use Hsinlu\Wechat\Foundation\Media;
 
 use Hsinlu\Wechat\Results\Result;
 
 class App
 {
-    use AccessToken, CallbackIP, CustomerService, UserManager, GroupManager, Menu, ShortUrl, Media;
+    use AccessToken, CallbackIP, CustomerService, MassSend, Template, 
+        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Media;
 
     /**
      * 应用ID

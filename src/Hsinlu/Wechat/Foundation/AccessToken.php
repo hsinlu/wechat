@@ -46,4 +46,12 @@ trait AccessToken
 
 		return $json->access_token;
 	}
+
+	/**
+	 * 从缓存中移除AccessToken
+	 */
+	public function forgetAccessToken()
+	{
+		Cache::forget('accessToken');
+	}
 }

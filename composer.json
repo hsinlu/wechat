@@ -12,15 +12,14 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "5.1.*",
-        "vinelab/http": "dev-master"
+        "hsinlu/http": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "Hsinlu\\Wechat\\": "src/Hsinlu/Wechat"
         },
         "files": [
-            "src/Hsinlu/Wechat/helpers.php",
-            "src/Hsinlu/Wechat/Foundation/helpers.php"
+            "src/Hsinlu/Wechat/helpers.php"
         ]
     },
     "minimum-stability": "dev"

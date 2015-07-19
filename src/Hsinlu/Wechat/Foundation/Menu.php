@@ -17,11 +17,11 @@ trait Menu
 	public function getMenu()
 	{
 		$json = http_get([
-				'url' => 'https://api.weixin.qq.com/cgi-bin/menu/get',
-				'params' => [
-					'access_token' => $this->getAccessToken(),
-				]
-			]);
+					'url' => 'https://api.weixin.qq.com/cgi-bin/menu/get',
+					'params' => [
+						'access_token' => $this->getAccessToken(),
+					]
+				]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -64,7 +64,7 @@ trait Menu
 				'params' => [
 					'access_token' => $this->getAccessToken(),
 				],
-				'content' => is_array($menu) || is_object($menu) ? json_encode($menu) : $menu,
+				'content' => is_string($menu) ? $menu : json_encode($menu),
 			]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
