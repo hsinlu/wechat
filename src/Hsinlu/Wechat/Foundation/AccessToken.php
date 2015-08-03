@@ -19,7 +19,7 @@ trait AccessToken
 	 */
 	public function getAccessToken()
 	{
-		return Cache::remember('accessToken' . $this->app_id, 100, function() { 
+		return Cache::remember('accessToken' . $this->appId, 100, function() { 
 			return $this->getAccessTokenFromServer();
 		});
 	}
@@ -35,8 +35,8 @@ trait AccessToken
 			'url' => 'https://api.weixin.qq.com/cgi-bin/token',
 			'params' => [
 				'grant_type' => 'client_credential',
-				'appid' => $this->app_id,
-				'secret' => $this->app_secret,
+				'appid' => $this->appId,
+				'secret' => $this->appSecret,
 			]
 		]);
 

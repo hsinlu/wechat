@@ -45,9 +45,20 @@ class WechatController extends Controller
             exit;
         }
         
-        $message = simplexml_load_string($message, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $app = wechat($uniqid);
 
-        return response(wechat($uniqid)->handle($message))
-                    ->header('Content-Type', 'application/xml');
+        // 找不到uniqid的应用，终止执行
+        if (is_null($app)) {
+            echo trans('wechat.wechat_not_available');
+            exit;
+        }
+
+        // 应用的执行策略不为空时，加载应用的执行策略
+        if (!empty($app->strategy)) {
+            require base_path('app/wechat-strategies/' . $app->strategy);
+        }
+
+        $message = simplexml_load_string($message, 'SimpleXMLElement', LIBXML_NOCDATA);
+        return response($app->handle($message))->header('Content-Type', 'application/xml');
     }
 }

@@ -31,32 +31,38 @@ class App
      * 
      * @var string
      */
-	protected $app_id; 
+	public $appId; 
 
     /**
      * 应用密钥
      * 
      * @var string
      */
-	protected $app_secret;
+	public $appSecret;
 	
     /**
      * 应用令牌
      * @var string
      */
-	protected $token;
+	public $token;
 
     /**
      * 消息是否加密
      * @var bool
      */
-    protected $encrypt;
+    public $encrypt;
 
     /**
      * 消息加解密密钥
      * @var string
      */
-    protected $encodingAESKey;
+    public $encodingAESKey;
+
+    /**
+     * 执行策略
+     * @var string
+     */
+    public $strategy;
 
     /**
      * 消息处理程序
@@ -71,11 +77,12 @@ class App
      */
     function __construct($config)
     {
-    	$this->app_id = $config['AppID'];
-    	$this->app_secret = $config['AppSecret'];
-    	$this->token = $config['Token'];
-		$this->encrypt = $config['Encrypt'];
-        $this->encodingAESKey = $config['EncodingAESKey'];
+    	$this->appId = $config['app_id'];
+    	$this->appSecret = $config['app_secret'];
+    	$this->token = $config['token'];
+		$this->encrypt = $config['encrypt'];
+        $this->encodingAESKey = $config['encoding_AES_key'];
+        $this->strategy = $config['strategy'];
     }
 
     /**

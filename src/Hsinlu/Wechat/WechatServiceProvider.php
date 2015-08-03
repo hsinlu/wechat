@@ -27,7 +27,8 @@ class WechatServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/config/wechat.php' => config_path('wechat.php'),
-            __DIR__ . '/resources/lang/' => base_path('/resources/lang/')
+            __DIR__ . '/resources/lang/' => base_path('/resources/lang/'),
+            __DIR__ . '/wechat-strategies/' => base_path('/app/wechat-strategies'),
         ]);
     }
 
