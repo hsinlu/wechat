@@ -2,7 +2,7 @@
 
 # wechat
 
-基于laravel5.1开发的微信公众平台SDK，支持管理多个微信应用，旨在于提供简洁优雅的开发体验。
+基于 laravel5.1 开发的微信公众平台 SDK，支持管理多个微信应用，旨在于提供简洁优雅的开发体验。
 
 ## 功能
 
@@ -46,18 +46,18 @@ composer require "hsinlu/wechat:dev-master"
 
 ##### 配置laravel项目
 
-1. 将`Hsinlu\Wechat\WechatServiceProvider`添加到laravel项目`config/app.php`中
+1. 将 `Hsin\Wechat\WechatServiceProvider` 添加到laravel项目 `config/app.php` 中
 
 ```php
 'providers' => [
 	// ...
 
 	// wechat
-	Hsinlu\Wechat\WechatServiceProvider::class,
+	Hsin\Wechat\WechatServiceProvider::class,
 ],
 ```
 
-2. 将`Hsinlu\Wechat\Http\Middleware\CheckWechatSignature`添加到laravel项目`app/Http/Kernel.php`中
+2. 将 `Hsin\Wechat\Http\Middleware\CheckWechatSignature` 配置到laravel项目 `app/Http/Kernel.php` 中
 
 ```php
 /**
@@ -69,11 +69,11 @@ protected $routeMiddleware = [
     // ...
 
     // wechat
-    'checkWechatSignature' => \Hsinlu\Wechat\Http\Middleware\CheckWechatSignature::class,
+    'wechat.signature' => \Hsin\Wechat\Http\Middleware\CheckWechatSignature::class,
 ];
 ```
 
-3. 最后执行`vendor:publish`将配置文件和其他资源文件拷贝到laravel项目对应的目录
+3. 最后执行 `vendor:publish` 将配置文件和其他资源文件拷贝到 laravel 项目对应的目录
 
 ```bash
 php artisan vendor:publish
@@ -83,7 +83,7 @@ php artisan vendor:publish
 
 ### 配置
 
-在`config/wechat.php`中配置微信应用的相关参数，如果有多个应用，复制`apps`数组第一个应用配置并更改相关的配置项。
+在 `config/wechat.php` 中配置微信应用的相关参数，如果有多个应用，复制 `apps` 数组第一个应用配置并更改相关的配置项。
 
 ```php
 <?php
@@ -94,7 +94,7 @@ return [
 		// 应用的唯一标识 => 应用配置
 		'应用的唯一标识' => [
 		    // 应用ID
-		    'AppID' => '应用ID',
+		    'AppID' => '应用 ID',
 		    // 应用密钥
 		    'AppSecret' => '应用密钥',
 		   	// 令牌
@@ -109,17 +109,19 @@ return [
 
 ```
 
-通过`wechat()`方法生成默认的微信应用（默认为配置中的第一个），通过`wechat('应用的唯一标识')`生成其他微信应用。
+通过 `wechat()` 方法生成默认的微信应用（默认为配置中的第一个），通过 `wechat('应用的唯一标识')`生成其他微信应用。
 
 ### 微信接入
 
-SDK中提供了`wechat/access`路由供应用接入使用，如果您的域名是`http://hsinlu.com`，那么您在微信中配置的**服务器地址**则是`http://hsinlu.com/wechat/access`。
+SDK中提供了 `wechat/access` 路由供应用接入使用，如果您的域名是 `http://hsinlu.com`，那么您在微信中配置的**服务器地址**则是 `http://hsinlu.com/wechat/access`。
 
-对于多个应用，配置的**服务器地址**则需要在`wechat/access`之上添加**应用的唯一标识**，如`http://hsinlu.com/wechat/access/wx1d3e8db24427e3a6`，SDK在收到微信推送的消息时，会根据**应用的唯一标识**，来判断是哪个应用。
+对于多个应用，配置的**服务器地址**则需要在 `wechat/access` 之上添加**应用的唯一标识**，如 `http://hsinlu.com/wechat/access/wx1d3e8db24427e3a6`，SDK 在收到微信推送的消息时，会根据**应用的唯一标识**，来判断是哪个应用。
 
 ### 被动接收消息
 
 #### 被动接收普通消息
+
+>> 被动接收消息处理策略写在 `app/Wechat/strategy.php` 文件。
 
 被动接收普通消息只需要绑定对应消息类别的处理程序，其中普通消息类别对应为：文本消息（text）、图片消息（image）、语音消息（voice）、视频消息（video）、小视频消息（shortvideo）、地理位置消息（location）、链接消息（link），下面代码以文本消息（text）为例：
 
@@ -129,7 +131,7 @@ wechat()->on('text', function($message) {
 });
 ```
 
-除了上面闭包形式的处理程序，您还可以设置单独的处理类，处理类需要包含`handle`方法。
+除了上面闭包形式的处理程序，您还可以设置单独的处理类，处理类需要包含 `handle` 方法。
 
 ```php
 <?php
@@ -167,12 +169,12 @@ wechat()->on('event.subscribe', function($message) {
 回复消息的类型为微信预定义的几种消息格式，分别为：回复文本消息（text）、回复图片消息（image）、回复语音消息（voice）、回复视频消息（video）、回复音乐消息（music）、回复图文消息（news），当然，SDK中已经对此类的消息做了封装，无需手动生成响应的XML。
 
 ```php
-Hsinlu\Wechat\Results\TextResult  // 对应文本消息
-Hsinlu\Wechat\Results\ImageResult // 对应图片消息
-Hsinlu\Wechat\Results\VoiceResult // 对应语音消息
-Hsinlu\Wechat\Results\VideoResult // 对应视频消息
-Hsinlu\Wechat\Results\MusicResult // 对应音乐消息
-Hsinlu\Wechat\Results\NewsResult  // 对应图文消息
+Hsin\Wechat\Results\TextResult  // 对应文本消息
+Hsin\Wechat\Results\ImageResult // 对应图片消息
+Hsin\Wechat\Results\VoiceResult // 对应语音消息
+Hsin\Wechat\Results\VideoResult // 对应视频消息
+Hsin\Wechat\Results\MusicResult // 对应音乐消息
+Hsin\Wechat\Results\NewsResult  // 对应图文消息
 ```
 
 > 所有的消息结果类都继承抽象类Result，您也可以根据需要扩展消息的类型

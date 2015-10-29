@@ -12,14 +12,14 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "5.1.*",
-        "hsinlu/http": "dev-master"
+        "guzzlehttp/guzzle": "^6.1@dev"
     },
     "autoload": {
         "psr-4": {
-            "Hsinlu\\Wechat\\": "src/Hsinlu/Wechat"
+            "Hsin\\Wechat\\": "src/Hsin/Wechat"
         },
         "files": [
-            "src/Hsinlu/Wechat/helpers.php"
+            "src/Hsin/Wechat/helpers.php"
         ]
     },
     "minimum-stability": "dev"
