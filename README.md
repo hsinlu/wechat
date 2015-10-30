@@ -73,7 +73,23 @@ protected $routeMiddleware = [
 ];
 ```
 
-3. 最后执行 `vendor:publish` 将配置文件和其他资源文件拷贝到 laravel 项目对应的目录
+3. 将 `/wechat/*` 请求路径加入到中间件 `App\Http\Middleware\VerifyCsrfToken` 排除列表
+
+```php
+class VerifyCsrfToken extends BaseVerifier
+{
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
+    protected $except = [
+        '/wechat/*'
+    ];
+}
+```
+
+4. 最后执行 `vendor:publish` 将配置文件和其他资源文件拷贝到 laravel 项目对应的目录
 
 ```bash
 php artisan vendor:publish

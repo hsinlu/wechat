@@ -39,7 +39,7 @@ class CheckWechatSignature
         $timestamp = $request->input('timestamp');
         $nonce = $request->input('nonce');
 
-        $token = wechat_config($request->route('one'))['Token'];
+        $token = wechat_config($request->route('one'))['token'];
         $tmpArr = array($token, $timestamp, $nonce);
         // use SORT_STRING rule
         sort($tmpArr, SORT_STRING);
