@@ -82,7 +82,6 @@ class App
     	$this->token = $config['token'];
 		$this->encrypt = $config['encrypt'];
         $this->encodingAESKey = $config['encoding_AES_key'];
-        $this->strategy = $config['strategy'];
     }
 
     /**
