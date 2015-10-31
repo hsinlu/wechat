@@ -18,13 +18,14 @@ use Hsin\Wechat\Func\Menu;
 use Hsin\Wechat\Func\ShortUrl;
 use Hsin\Wechat\Func\QRCode;
 use Hsin\Wechat\Func\Media;
+use Hsin\Wechat\Func\OAuth2;
 
 use Hsin\Wechat\Results\Result;
 
 class App
 {
     use AccessToken, CallbackIP, CustomerService, MassSend, Template, 
-        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Media;
+        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Media, OAuth2;
 
     /**
      * 应用ID
