@@ -63,15 +63,17 @@ trait Media
 	 * @param  int    $count  返回素材的数量，取值在1到20之间
 	 * @return stdClass       json
 	 */
-	public function getMaterialList($type, $offset, $count)
+	public function getMaterialList($type, $offset = 0, $count = 20)
 	{
 		$json = http()->post('https://api.weixin.qq.com/cgi-bin/material/batchget_material', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
+			],
+			'json' => [
 				'type' => $type,
 				'offset' => $offset,
 				'count' => $count,
-			],
+			]
 		])->json();
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {

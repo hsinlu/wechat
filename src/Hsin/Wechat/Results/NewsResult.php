@@ -18,8 +18,9 @@ class NewsResult extends Result
 		extract($this->data);
 
 		$itemsCount = count($items);
+        $item_str = '';
         foreach ($items as $item) {
-        	extract($item)
+        	extract($item);
             $item_str .= "<item>
     	                    <Title><![CDATA[{$title}]]></Title>
     	                    <Description><![CDATA[{$description}]]></Description>
