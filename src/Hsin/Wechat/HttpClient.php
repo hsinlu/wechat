@@ -36,6 +36,11 @@ class HttpClient
 		return $this->parseBody($this->response->getBody(), 'raw');
 	}
 
+	public function content()
+	{
+		return $this->parseBody($this->response->getBody(), 'content');	
+	}
+
 	public function json()
 	{
 		return $this->parseBody($this->response->getBody(), 'json'); 
@@ -51,6 +56,8 @@ class HttpClient
 	    switch ($returnedType) {
 	        case 'raw':
 	            return $body;
+	        case 'content':
+	        	return $body->getContents();
 	        case 'json':
 	            return json_decode($body->getContents());
 	        case 'xml':
