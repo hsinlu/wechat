@@ -19,16 +19,16 @@ trait CustomerService
 	 */
 	public function addKFAccount($account, $nickname, $password)
 	{
-		$json = http()->post('https://api.weixin.qq.com/customservice/kfaccount/add', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/customservice/kfaccount/add', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => [
+			'body' => json_encode([
 				'kf_account' => $account,
 				'nickname' => $nickname,
-				'password' => $password,
-			],
-		])->json();
+				'password' => md5($password),
+			], JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -47,16 +47,16 @@ trait CustomerService
 	 */
 	public function modifyKFAccount($account, $nickname, $password)
 	{
-		$json = http()->post('https://api.weixin.qq.com/customservice/kfaccount/update', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/customservice/kfaccount/update', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => [
+			'body' => json_encode([
 				'kf_account' => $account,
 				'nickname' => $nickname,
-				'password' => $password,
-			],
-		])->json();
+				'password' => md5($password),
+			], JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -75,16 +75,16 @@ trait CustomerService
 	 */
 	public function deleteKFAccount($account, $nickname, $password)
 	{
-		$json = http()->post('https://api.weixin.qq.com/customservice/kfaccount/del', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/customservice/kfaccount/del', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => [
+			'body' => json_encode([
 				'kf_account' => $account,
 				'nickname' => $nickname,
-				'password' => $password,
-			],
-		])->json();
+				'password' => md5($password),
+			], JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -102,13 +102,23 @@ trait CustomerService
 	 */
 	public function uploadKFAccountAvatar($account, $avatar)
 	{
-		$json = http()->post('http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg', [
+		if (mb_strtolower(pathinfo($file, PATHINFO_EXTENSION)) != 'jpg') {
+			throw new Exception(sprintf(trans('wechat.file_type'), '*.jpg'));
+		}
+
+		$json = $this->http->postJson('http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 				'kf_account' => $account,
 			],
-			'content' => $avatar,
-		])->json();
+			'multipart' => [
+				[
+		            'name' => basename($avatar),
+		            'filename' => basename($avatar),
+		            'contents' => fopen($avatar, 'r'),
+		        ],
+			]
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -124,11 +134,11 @@ trait CustomerService
 	 */
 	public function getAllKFAccount()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/customservice/getkflist', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/customservice/getkflist', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -145,17 +155,17 @@ trait CustomerService
 	 */
 	public function sendKFMessage($message)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/custom/send', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/custom/send', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'body' => is_string($message) ? $message : json_encode($message),
+			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
 		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return true;
+		return $json;
 	}
 }

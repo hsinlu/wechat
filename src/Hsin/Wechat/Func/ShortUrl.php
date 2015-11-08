@@ -17,7 +17,7 @@ trait ShortUrl
 	 */
 	public function shortUrl($long_url)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/shorturl', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/shorturl', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
@@ -25,7 +25,7 @@ trait ShortUrl
 				'action' => 'long2short',
 				'long_url' => $long_url,
 			],
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

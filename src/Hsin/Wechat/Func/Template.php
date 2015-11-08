@@ -18,7 +18,7 @@ trait Template
 	 */
 	public function setIndustry($industry_id1, $industry_id2)
 	{
-		$json = http_post('https://api.weixin.qq.com/cgi-bin/template/api_set_industry', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/template/api_set_industry', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
@@ -26,7 +26,7 @@ trait Template
 				'industry_id1' => $industry_id1,
 				'industry_id2' => $industry_id2,
 			],
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -43,14 +43,14 @@ trait Template
 	 */
 	public function getTemplateID($template_id_short)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/template/api_add_template',[
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/template/api_add_template',[
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
 			'json' => [
 				'template_id_short' => $template_id_short,
 			],
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -67,12 +67,12 @@ trait Template
 	 */
 	public function sendTemplateMessage($message)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/template/send', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/template/send', [
 			'params' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'body' => is_string($message) ? $message : json_encode($message),
-		])->json();
+			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

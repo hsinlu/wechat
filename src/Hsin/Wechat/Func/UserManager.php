@@ -17,12 +17,12 @@ trait UserManager
 	 */
 	public function getUserList($next_openid = '')
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/user/get', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/user/get', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 				'next_openid' => $next_openid,
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -40,13 +40,13 @@ trait UserManager
 	 */
 	public function getUserInfo($openid, $lang = 'zh-CN')
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/user/info', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/user/info', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 				'openid' => $openid,
 				'lang' => $lang,
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -63,12 +63,12 @@ trait UserManager
 	 */
 	public function batchGetUserInfo($openids)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/user/info/batchget', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/user/info/batchget', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
 			'json' => [ 'user_list' => $openids ]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -85,15 +85,12 @@ trait UserManager
 	 */
 	public function updateUserRemark($openid, $remark)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/user/info/updateremark', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/user/info/updateremark', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => [
-				'openid' => $openid,
-				'remark' => $remark,
-			],
-		])->json();
+			'body' => json_encode([ 'openid' => $openid, 'remark' => $remark, ], JSON_UNESCAPED_UNICODE)
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

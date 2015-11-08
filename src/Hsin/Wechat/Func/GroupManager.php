@@ -9,17 +9,39 @@ use Hsin\Wechat\WechatException;
 trait GroupManager
 {
 	/**
+	 * 创建分组
+	 * 
+	 * @param  string $name 分组名称
+	 * @return stdClass       json
+	 */
+	public function createGroup($name)
+	{
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/groups/create', [
+			'query' => [
+				'access_token' => $this->getAccessToken(),
+			],
+			'body' => json_encode(['group' => [ 'name' => $name ],], JSON_UNESCAPED_UNICODE),
+		]);
+
+		if (property_exists($json, 'errcode') && $json->errcode != 0) {
+			throw new WechatException($json->errmsg, $json->errcode);
+		}
+
+		return $json;
+	}
+
+	/**
 	 * 获取所有分组
 	 * 
 	 * @return stdClass 所有分组
 	 */
 	public function getAllGroups()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/groups/get', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/groups/get', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -36,44 +58,18 @@ trait GroupManager
 	 */
 	public function getGroupIdByOpenId($openid)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/groups/getid', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/groups/getid', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
 			'json' => ['openid' => $openid, ], 
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
 		return $json->groupid;
-	}
-
-	/**
-	 * 创建分组
-	 * 
-	 * @param  string $name 分组名称
-	 * @return stdClass       json
-	 */
-	public function createGroup($name)
-	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/groups/create', [
-			'query' => [
-				'access_token' => $this->getAccessToken(),
-			],
-			'json' => [
-				'group' => [
-					'name' => $name
-				],
-			],
-		])->json();
-
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
-
-		return $json;
 	}
 
 	/**
@@ -85,17 +81,12 @@ trait GroupManager
 	 */
 	public function updateGroupName($groupid, $name)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/groups/update', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/groups/update', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => [
-				'group' => [
-					'id' => $groupid,
-					'name' => $name,
-				],
-			],
-		])->json();
+			'body' => json_encode(['group' => [ 'id' => $groupid, 'name' => $name ],], JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -112,16 +103,14 @@ trait GroupManager
 	 */
 	public function deleteGroup($groupid)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/groups/delete', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/groups/delete', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
 			'json' => [
-				'group' => [
-					'id' => $groupid
-				],
+				'group' => [ 'id' => $groupid ],
 			],
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -140,19 +129,21 @@ trait GroupManager
 	public function moveToGroup($openid, $groupid)
 	{
 		$url = 'https://api.weixin.qq.com/cgi-bin/groups/members/update';
+		$data = [ 'to_groupid' => $groupid ];
+
 		if (is_array($openid)) {
 			$url = 'https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate';
+			$data['openid_list'] = $openid;
+		} else {
+			$data['openid'] = $openid;
 		}
 
-		$json = http()->post($url, [
+		$json = $this->http->postJson($url, [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => [
-				'openid' => $openid,
-				'to_groupid' => $groupid,
-			],
-		])->json();
+			'json' => $data,
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

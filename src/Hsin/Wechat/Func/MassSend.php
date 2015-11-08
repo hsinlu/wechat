@@ -10,28 +10,6 @@ use Hsin\Wechat\WechatException;
 trait MassSend
 {
 	/**
-	 * 上传图文消息素材【订阅号与服务号认证后均可用】
-	 * 
-	 * @param  string or array $articles 图文消息
-	 * @return stdClass           		 json
-	 */
-	public function uploadNews($articles)
-	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/media/uploadnews', [
-			'query' => [
-				'access_token' => $this->getAccessToken(),
-			],
-			'body' => is_string($articles) ? $articles : json_encode($articles),
-		])->json();
-
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
-
-		return $json;
-	}
-
-	/**
 	 * 根据分组进行群发【订阅号与服务号认证后均可用】
 	 *
 	 * @param string or object $message 群发的消息
@@ -39,12 +17,12 @@ trait MassSend
 	 */
 	public function massSendByGroup($message)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/mass/sendall', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/mass/sendall', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'body' => is_string($message) ? $message : json_encode($message),
-		])->json();
+			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -61,18 +39,18 @@ trait MassSend
 	 */
 	public function massSendByOpenIDList($message)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/mass/send', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/mass/send', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'body' => is_string($message) ? $message : json_encode($message),
-		])->json();
+			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return true;
+		return $json;
 	}
 
 	/**
@@ -83,12 +61,12 @@ trait MassSend
 	 */
 	public function deleteMassSend($msg_id)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/mass/delete', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/mass/delete', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => ['msg_id' => $msg_id],
-		])->json();
+			'json' => [ 'msg_id' => $msg_id ],
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -105,18 +83,18 @@ trait MassSend
 	 */	
 	public function previewMassSend($message)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/mass/preview', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/mass/preview', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'body' => is_string($message) ? $message : json_encode($message),
-		])->json();
+			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
 		}
 
-		return true;
+		return $json;
 	}
 
 	/**
@@ -127,12 +105,12 @@ trait MassSend
 	 */
 	public function getMassSendStatus($msg_id)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/message/mass/get', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/message/mass/get', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'json' => ['msg_id' => $msg_id],
-		])->json();
+			'json' => [ 'msg_id' => $msg_id ]
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

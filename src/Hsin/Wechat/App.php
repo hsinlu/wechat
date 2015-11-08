@@ -17,7 +17,7 @@ use Hsin\Wechat\Func\GroupManager;
 use Hsin\Wechat\Func\Menu;
 use Hsin\Wechat\Func\ShortUrl;
 use Hsin\Wechat\Func\QRCode;
-use Hsin\Wechat\Func\Media;
+use Hsin\Wechat\Func\Material;
 use Hsin\Wechat\Func\OAuth2;
 
 use Hsin\Wechat\Results\Result;
@@ -25,7 +25,7 @@ use Hsin\Wechat\Results\Result;
 class App
 {
     use AccessToken, CallbackIP, CustomerService, MassSend, Template, 
-        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Media, OAuth2;
+        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Material, OAuth2;
 
     /**
      * 应用ID
@@ -73,6 +73,12 @@ class App
     protected $handlers = [];
 
     /**
+     * http client
+     * @var Hsin\Wechat\HttpClient
+     */
+    protected $http;
+
+    /**
      * 创建应用实例
      * @param array $config 应用配置
      */
@@ -83,6 +89,8 @@ class App
     	$this->token = $config['token'];
 		$this->encrypt = $config['encrypt'];
         $this->encodingAESKey = $config['encoding_AES_key'];
+
+        $this->http = new HttpClient;
     }
 
     /**
@@ -114,11 +122,7 @@ class App
      */
     protected function addOrModifyHandler($type, $handler)
     {
-    	if (isset($this->handlers[$type])) {
-    		$this->handlers[$type] = $handler;
-    	} else {
-    		$this->handlers[$type] = $handler;
-    	}
+    	$this->handlers[$type] = $handler;
     }
 
     /**
@@ -131,30 +135,25 @@ class App
     {
         $type = trim($message->MsgType);
         // 事件类型时设置为事件类型+具体事件，如event.subscribe
-        if ($type == 'event') {
-            $type .= '.' . trim($message->Event); 
+        if ($type === 'event') {
+            $type .= '.'.trim($message->Event); 
         }
 
+        // 没有事件处理程序，直接返回空
         if (!isset($this->handlers[$type])) {
-            throw new OutOfBoundsException(trans('wechat.hanlder_not_available'));
+            return 'success';
         }
 
         $handler = $this->handlers[$type];
 
         // 消息处理程序为闭包
         if ($handler instanceof Closure) {
-            $result = $handler($message);
+            $result = call_user_func($handler, $message);
         } else {
-            $handler = new $handler;
-
-            $result = $handler->handle($message);
+            $result = call_user_func([new $handler, 'handle'], $message);
         }
 
         // 返回结果为Result类型，执行Result的execute方法
-        if ($result instanceof Result) {
-            return $result->exec();
-        }
-
-        return $result;
+        return $result instanceof Result ? $result->exec() : $result;
     }
 }

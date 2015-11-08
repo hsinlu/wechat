@@ -19,7 +19,7 @@ trait AccessToken
 	 */
 	public function getAccessToken()
 	{
-		return Cache::remember('accessToken' . $this->appId, 100, function() { 
+		return Cache::remember('accessToken'.$this->appId, 100, function() { 
 			return $this->getAccessTokenFromServer();
 		});
 	}
@@ -31,13 +31,13 @@ trait AccessToken
 	 */
 	protected function getAccessTokenFromServer()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/token', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/token', [
 			'query' => [
 				'grant_type' => 'client_credential',
 				'appid' => $this->appId,
 				'secret' => $this->appSecret,
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

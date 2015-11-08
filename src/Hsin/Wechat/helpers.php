@@ -42,15 +42,3 @@ if (!function_exists('wechat_result')) {
 		return new $make($data);
 	}
 }
-
-if (!function_exists('http')) {
-	/**
-     * http 客户端
-     * 
-     * @return Hsin\Wechat\HttpClient
-     */
-    function http()
-    {
-    	return new Hsin\Wechat\HttpClient;
-    }
-}

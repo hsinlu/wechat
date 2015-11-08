@@ -16,11 +16,11 @@ trait Menu
 	 */
 	public function getMenu()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/menu/get', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/menu/get', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -36,11 +36,11 @@ trait Menu
 	 */
 	public function getMenuAnyWay()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -57,12 +57,12 @@ trait Menu
 	 */
 	public function createMenu($menu)
 	{
-		$json = http()->post('https://api.weixin.qq.com/cgi-bin/menu/create', [
+		$json = $this->http->postJson('https://api.weixin.qq.com/cgi-bin/menu/create', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			],
-			'body' => is_string($menu) ? $menu : json_encode($menu),
-		])->json();
+			'body' => is_string($menu) ? $menu : json_encode($menu, JSON_UNESCAPED_UNICODE),
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);
@@ -78,11 +78,11 @@ trait Menu
 	 */
 	public function deleteMenu()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/menu/delete', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/menu/delete', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

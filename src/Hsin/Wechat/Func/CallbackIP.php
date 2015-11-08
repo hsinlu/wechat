@@ -16,11 +16,11 @@ trait CallbackIP
 	 */
 	public function getCallbackIP()
 	{
-		$json = http()->get('https://api.weixin.qq.com/cgi-bin/getcallbackip', [
+		$json = $this->http->getJson('https://api.weixin.qq.com/cgi-bin/getcallbackip', [
 			'query' => [
 				'access_token' => $this->getAccessToken(),
 			]
-		])->json();
+		]);
 
 		if (property_exists($json, 'errcode') && $json->errcode != 0) {
 			throw new WechatException($json->errmsg, $json->errcode);

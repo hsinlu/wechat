@@ -2,6 +2,7 @@
 
 namespace Hsin\Wechat\Http\Controllers;
 
+use Log;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -53,7 +54,9 @@ class WechatController extends Controller
             exit;
         }
 
+        Log::info("{$uniqid} receve message : {$message}");
+
         $message = simplexml_load_string($message, 'SimpleXMLElement', LIBXML_NOCDATA);
-        return response($app->handle($message))->header('Content-Type', 'application/xml');
+        return response($app->handle($message));
     }
 }
