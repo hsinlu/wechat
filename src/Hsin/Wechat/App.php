@@ -19,13 +19,16 @@ use Hsin\Wechat\Func\ShortUrl;
 use Hsin\Wechat\Func\QRCode;
 use Hsin\Wechat\Func\Material;
 use Hsin\Wechat\Func\OAuth2;
+use Hsin\Wechat\Func\DataCube;
+use Hsin\Wechat\Func\Semantic;
 
 use Hsin\Wechat\Results\Result;
 
 class App
 {
-    use AccessToken, CallbackIP, CustomerService, MassSend, Template, 
-        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Material, OAuth2;
+    use AccessToken, CallbackIP, CustomerService, MassSend, Template,
+        AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Material,
+        OAuth2, DataCube, Semantic;
 
     /**
      * 应用ID
