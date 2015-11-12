@@ -2,7 +2,7 @@
 
 # wechat
 
-基于 laravel5.1 开发的微信公众平台 SDK，支持管理多个微信应用，旨在于提供简洁优雅的开发体验。
+开发的微信公众平台 SDK，旨在于提供简洁优雅的开发体验。
 
 > 暂不推荐于生产环境
 
@@ -60,43 +60,35 @@ composer require "hsinlu/wechat"
 
 ### 配置
 
-在 `config/wechat.php` 中配置微信应用的相关参数，如果有多个应用，复制 `apps` 数组第一个应用配置并更改相关的配置项。
+在实例化类时传入微信相关的配置。
 
 ```php
 <?php
 
-return 
-		    // 应用ID
-		    'AppID' => '应用 ID',
-		    // 应用密钥
-		    'AppSecret' => '应用密钥',
-		   	// 令牌
-		    'Token' => '令牌',
-		    // 消息是否加密 
-		    'Encrypt' => false,
-		    // 消息加解密密钥
-		    'EncodingAESKey' => '消息加解密密钥',
+// 一下内容中的$app均是`Hsin\Wechat\Application`对象
+$app = new Hsin\Wechat\Application([
+  // 应用ID
+    'app_id' => '应用ID',
+    // 应用密钥
+    'app_secret' => '应用密钥',
+    // 令牌
+    'token' => '令牌',
+    // 消息是否加密 
+    'encrypt' => false,
+    // 消息加解密密钥
+    'encoding_AES_key' => '消息加解密密钥',
+]);
 
 ```
-
-通过 `wechat()` 方法生成默认的微信应用（默认为配置中的第一个），通过 `wechat('应用的唯一标识')`生成其他微信应用。
-
-### 微信接入
-
-SDK中提供了 `wechat/access` 路由供应用接入使用，如果您的域名是 `http://hsinlu.com`，那么您在微信中配置的**服务器地址**则是 `http://hsinlu.com/wechat/access`。
-
-对于多个应用，配置的**服务器地址**则需要在 `wechat/access` 之上添加**应用的唯一标识**，如 `http://hsinlu.com/wechat/access/wx1d3e8db24427e3a6`，SDK 在收到微信推送的消息时，会根据**应用的唯一标识**，来判断是哪个应用。
 
 ### 被动接收消息
 
 #### 被动接收普通消息
 
-> 被动接收消息处理策略写在 `app/Wechat/strategy.php` 文件。
-
 被动接收普通消息只需要绑定对应消息类别的处理程序，其中普通消息类别对应为：文本消息（text）、图片消息（image）、语音消息（voice）、视频消息（video）、小视频消息（shortvideo）、地理位置消息（location）、链接消息（link），下面代码以文本消息（text）为例：
 
 ```php
-wechat()->on('text', function($message) {
+$app->on('text', function($message) {
 	return 'Hello Wechat';
 });
 ```
@@ -128,7 +120,7 @@ class TextHandler
 事件消息与普通消息的处理方式相同，唯一不同的是事件消息的处理程序的键值为**消息类型+事件类型组成**，其中事件消息的类型为`event`，事件类型包含以下几种：关注（subscribe）、取消关注（unsubscribe）、扫描带参数二维码事件（为关注时为subscribe，EventKey以qrscene_为前缀；已关注时为SCAN）、上报地理位置事件（LOCATION）、自定义菜单事件（CLICK）、点击菜单跳转链接时的事件（VIEW），下面以关注事件为例：
 
 ```php
-wechat()->on('event.subscribe', function($message) {
+$app->on('event.subscribe', function($message) {
 	return '您已关注。';
 });
 ```
@@ -153,8 +145,8 @@ Hsin\Wechat\Results\NewsResult  // 对应图文消息
 
 ```php
 
-wechat()->on('text', function ($message) {
-     return wechat_result(TextResult::class, [
+$app->on('text', function ($message) {
+     return new TextResult([
           'fromUserName' => trim($message->ToUserName),
           'toUserName' => trim($message->FromUserName),
           'content' => '这是一条文本消息。',
@@ -162,7 +154,6 @@ wechat()->on('text', function ($message) {
 });
 
 ```
-> SDK中提供了`wechat_result`方法来帮助构建消息结果类，您仍可以使用`new TextResult([])`形式构建。
 
 ### 调用微信接口
 
@@ -174,7 +165,7 @@ wechat()->on('text', function ($message) {
 
 ```php
 // 返回access token
-wechat()->getAccessToken();
+$app->getAccessToken();
 ```
 </br>
 
@@ -184,7 +175,7 @@ wechat()->getAccessToken();
 
 ```php
 // 移除缓存中的access token
-wechat()->forgetAccessToken();
+$app->forgetAccessToken();
 ```
 
 #### 获取微信服务器IP地址
@@ -195,7 +186,7 @@ wechat()->forgetAccessToken();
 
 ```php
 // 获取微信服务器IP地址列表
-wechat()->getCallbackIP();
+$app->getCallbackIP();
 
 // {
 //		"ip_list":["127.0.0.1","127.0.0.1"]
@@ -213,7 +204,7 @@ wechat()->getCallbackIP();
 // $account => 'test1@test'
 // $nickname => '客服1'
 // $password => 'pswmd5'
-wechat()->addKFAccount($account, $nickname, $password);
+$app->addKFAccount($account, $nickname, $password);
 
 // bool 是否添加成功
 ```
@@ -228,7 +219,7 @@ wechat()->addKFAccount($account, $nickname, $password);
 // $account => 'test1@test'
 // $nickname => '客服1'
 // $password => 'pswmd5'
-wechat()->modifyKFAccount($account, $nickname, $password);
+$app->modifyKFAccount($account, $nickname, $password);
 
 // bool 是否修改成功
 ```
@@ -243,7 +234,7 @@ wechat()->modifyKFAccount($account, $nickname, $password);
 // $account => 'test1@test'
 // $nickname => '客服1'
 // $password => 'pswmd5'
-wechat()->deleteKFAccount($account, $nickname, $password);
+$app->deleteKFAccount($account, $nickname, $password);
 
 // bool 是否删除成功
 ```
@@ -257,7 +248,7 @@ wechat()->deleteKFAccount($account, $nickname, $password);
 // 设置客服帐号的头像
 // $account => 'test1@test'
 // $avatar => '头像文件'
-wechat()->uploadKFAccountAvatar($account, $avatar);
+$app->uploadKFAccountAvatar($account, $avatar);
 
 // bool 是否设置成功
 ```
@@ -271,7 +262,7 @@ wechat()->uploadKFAccountAvatar($account, $avatar);
 // 获取所有客服账号
 // $account => 'test1@test'
 // $avatar => '头像文件'
-wechat()->getAllKFAccount();
+$app->getAllKFAccount();
 
 /*
 {
@@ -318,7 +309,7 @@ wechat()->getAllKFAccount();
 	$message可以为json字符串、json对象、数组，为对象或数组时会自动转化为json字符串。
 */
 // 具体参见：http://mp.weixin.qq.com/wiki/1/70a29afed17f56d537c833f89be979c9.html
-wechat()->sendKFMessage($message);
+$app->sendKFMessage($message);
 
 // bool 是否发送成功
 ```
@@ -355,7 +346,7 @@ $articles = '{
 
 $articles可以为json字符串、json对象、数组，为对象或数组时会自动转化为json字符串。
 */
-wechat()->uploadNews($articles);
+$app->uploadNews($articles);
 
 /*
 {
@@ -388,7 +379,7 @@ $message可以为json字符串、json对象、数组，为对象或数组时会�
 */
 // 具体参见：http://mp.weixin.qq.com/wiki/15/5380a4e6f02f2ffdc7981a8ed7a40753.html
 
-wechat()->massSendByGroup($message);
+$app->massSendByGroup($message);
 
 /*
 {
