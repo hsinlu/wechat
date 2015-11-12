@@ -91,11 +91,11 @@ trait OAuth2
 
 	private function cacheOAuth2Info($oauth2)
 	{
-		return Cache::forever('OAuth2'.$oauth2->openid, $oauth2);
+		return $this->cache->remember('OAuth2'.$oauth2->openid, $oauth2);
 	}
 
 	public function getOAuth2InfoFromCache($openid)
 	{
-		return Cache::get('OAuth2'.$openid);
+		return $this->cache->get('OAuth2'.$openid);
 	}
 }

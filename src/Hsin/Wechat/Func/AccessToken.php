@@ -3,7 +3,6 @@
 namespace Hsin\Wechat\Func;
 
 use \Closure;
-use Illuminate\Support\Facades\Cache;
 
 use Hsin\Wechat\WechatException;
 
@@ -19,9 +18,9 @@ trait AccessToken
 	 */
 	public function getAccessToken()
 	{
-		return Cache::remember('accessToken'.$this->appId, 100, function() { 
+		return $this->cache->remember('accessToken'.$this->appId, function() { 
 			return $this->getAccessTokenFromServer();
-		});
+		}, 100);
 	}
 
 	/**
@@ -51,6 +50,6 @@ trait AccessToken
 	 */
 	public function forgetAccessToken()
 	{
-		Cache::forget('accessToken');
+		$this->cache->forget('accessToken'.$this->appId);
 	}
 }

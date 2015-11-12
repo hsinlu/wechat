@@ -1,7 +1,7 @@
 {
     "name": "hsinlu/wechat",
-    "description": "wechat sdk for laravel 5.1",
-    "keywords": ["wechat", "laravel"],
+    "description": "wechat sdk",
+    "keywords": ["wechat"],
     "license": "MIT",
     "authors": [
         {
@@ -11,16 +11,11 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "5.1.*",
-        "guzzlehttp/guzzle": "^6.1@dev"
+        "guzzlehttp/guzzle": "^6.1"
     },
     "autoload": {
         "psr-4": {
             "Hsin\\Wechat\\": "src/Hsin/Wechat"
-        },
-        "files": [
-            "src/Hsin/Wechat/helpers.php"
-        ]
-    },
-    "minimum-stability": "dev"
+        }
+    }
 }

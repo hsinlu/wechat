@@ -53,58 +53,7 @@ json_encode(['group' => [ 'id' => $groupid, 'name' => '我的家人' ],], JSON_U
 ## 安装
 ##### 使用composer安装
 ```bash
-composer require "hsinlu/wechat:dev-master"
-```
-
-##### 配置laravel项目
-
-1. 将 `Hsin\Wechat\WechatServiceProvider` 添加到laravel项目 `config/app.php` 中
-
-```php
-'providers' => [
-	// ...
-
-	// wechat
-	Hsin\Wechat\WechatServiceProvider::class,
-],
-```
-
-2. 将 `Hsin\Wechat\Http\Middleware\CheckWechatSignature` 配置到laravel项目 `app/Http/Kernel.php` 中
-
-```php
-/**
- * The application's route middleware.
- *
- * @var array
- */
-protected $routeMiddleware = [
-    // ...
-
-    // wechat
-    'wechat.signature' => \Hsin\Wechat\Http\Middleware\CheckWechatSignature::class,
-];
-```
-
-3. 将 `/wechat/*` 请求路径加入到中间件 `App\Http\Middleware\VerifyCsrfToken` 排除列表
-
-```php
-class VerifyCsrfToken extends BaseVerifier
-{
-    /**
-     * The URIs that should be excluded from CSRF verification.
-     *
-     * @var array
-     */
-    protected $except = [
-        '/wechat/*'
-    ];
-}
-```
-
-4. 最后执行 `vendor:publish` 将配置文件和其他资源文件拷贝到 laravel 项目对应的目录
-
-```bash
-php artisan vendor:publish
+composer require "hsinlu/wechat"
 ```
 
 ## 使用
@@ -116,11 +65,7 @@ php artisan vendor:publish
 ```php
 <?php
 
-return [
-	// 应用的配置，支持多个应用
-	'apps' => [
-		// 应用的唯一标识 => 应用配置
-		'应用的唯一标识' => [
+return 
 		    // 应用ID
 		    'AppID' => '应用 ID',
 		    // 应用密钥
@@ -131,9 +76,6 @@ return [
 		    'Encrypt' => false,
 		    // 消息加解密密钥
 		    'EncodingAESKey' => '消息加解密密钥',
-		],
-	],
-];
 
 ```
 

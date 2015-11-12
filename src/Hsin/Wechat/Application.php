@@ -24,7 +24,7 @@ use Hsin\Wechat\Func\Semantic;
 
 use Hsin\Wechat\Results\Result;
 
-class App
+class Application
 {
     use AccessToken, CallbackIP, CustomerService, MassSend, Template,
         AutoReplyRule, UserManager, GroupManager, Menu, ShortUrl, QRCode, Material,
@@ -82,10 +82,17 @@ class App
     protected $http;
 
     /**
+     * file cache
+     * @var Hsin\Wechat\Cache
+     */
+    protected $cache;
+
+    /**
      * 创建应用实例
      * @param array $config 应用配置
+     * @param object $cache 缓存方案
      */
-    function __construct($config)
+    function __construct($config, $cache = null)
     {
     	$this->appId = $config['app_id'];
     	$this->appSecret = $config['app_secret'];
@@ -94,6 +101,7 @@ class App
         $this->encodingAESKey = $config['encoding_AES_key'];
 
         $this->http = new HttpClient;
+        $this->cache = $cache ?: new Cache;
     }
 
     /**
@@ -110,7 +118,7 @@ class App
     		}
     	} else {
     		if (!isset($handler)) {
-    			throw new Exception(trans('wechat.handler_null'));
+    			throw new Exception($type.'处理程序为空！');
     		}
 
     		$this->addOrModifyHandler($type, $handler);
