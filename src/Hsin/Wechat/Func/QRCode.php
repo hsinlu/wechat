@@ -74,9 +74,7 @@ trait QRCode
 			'json' => $qr_scene,
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}

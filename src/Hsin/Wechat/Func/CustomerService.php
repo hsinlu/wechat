@@ -30,9 +30,7 @@ trait CustomerService
 			], JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -58,9 +56,7 @@ trait CustomerService
 			], JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -86,9 +82,7 @@ trait CustomerService
 			], JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -120,9 +114,7 @@ trait CustomerService
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -140,9 +132,7 @@ trait CustomerService
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -162,9 +152,7 @@ trait CustomerService
 			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}

@@ -39,9 +39,7 @@ trait Material
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json->url;
 	}
@@ -61,9 +59,7 @@ trait Material
 			'body' => is_string($articles) ? $articles : json_encode($articles, JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -91,9 +87,7 @@ trait Material
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -116,9 +110,7 @@ trait Material
 		if ($response->getHeaderLine('Content-Type') == 'text/plain') {
 			$json = $this->http->parseBody($response->getBody(), 'json');
 
-			if (property_exists($json, 'errcode') && $json->errcode != 0) {
-				throw new WechatException($json->errmsg, $json->errcode);
-			}
+			$this->exceptionOrNot($json);
 
 			return $json;
 		}
@@ -149,9 +141,7 @@ trait Material
 			'body' => is_string($news) ? $news : json_encode($news, JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json->media_id;
 	}
@@ -177,9 +167,7 @@ trait Material
 			], JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -205,9 +193,7 @@ trait Material
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -231,9 +217,7 @@ trait Material
 		if ($response->getHeaderLine('Content-Type') == 'text/plain') {
 			$json = $this->http->parseBody($response->getBody(), 'json');
 
-			if (property_exists($json, 'errcode') && $json->errcode != 0) {
-				throw new WechatException($json->errmsg, $json->errcode);
-			}
+			$this->exceptionOrNot($json);
 
 			return $json;
 		}
@@ -264,9 +248,7 @@ trait Material
 			'json' => [ 'media_id' => $media_id ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -292,9 +274,7 @@ trait Material
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -312,9 +292,7 @@ trait Material
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}

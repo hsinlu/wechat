@@ -22,9 +22,7 @@ trait OAuth2
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		$this->cacheOAuth2Info($json);
 
@@ -43,9 +41,7 @@ trait OAuth2
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		$this->cacheOAuth2Info($json);
 
@@ -64,9 +60,7 @@ trait OAuth2
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -82,9 +76,7 @@ trait OAuth2
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}

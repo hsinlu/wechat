@@ -23,9 +23,7 @@ trait GroupManager
 			'body' => json_encode(['group' => [ 'name' => $name ],], JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -43,9 +41,7 @@ trait GroupManager
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -65,9 +61,7 @@ trait GroupManager
 			'json' => ['openid' => $openid, ], 
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json->groupid;
 	}
@@ -88,9 +82,7 @@ trait GroupManager
 			'body' => json_encode(['group' => [ 'id' => $groupid, 'name' => $name ],], JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -112,9 +104,7 @@ trait GroupManager
 			],
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -145,9 +135,7 @@ trait GroupManager
 			'json' => $data,
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}

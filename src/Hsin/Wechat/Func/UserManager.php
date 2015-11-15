@@ -24,9 +24,7 @@ trait UserManager
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -48,9 +46,7 @@ trait UserManager
 			]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -70,9 +66,7 @@ trait UserManager
 			'json' => [ 'user_list' => $openids ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -92,9 +86,7 @@ trait UserManager
 			'body' => json_encode([ 'openid' => $openid, 'remark' => $remark, ], JSON_UNESCAPED_UNICODE)
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}

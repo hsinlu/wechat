@@ -11,7 +11,7 @@ class Cache
 	 * 缓存存储的路径
 	 * @var string
 	 */
-	public $cachePath = '../cache/';
+	public $cachePath = '../cache/wechat/';
 
 	/**
 	 * 缓存指定Key的值

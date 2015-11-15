@@ -24,9 +24,7 @@ trait MassSend
 			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -46,9 +44,7 @@ trait MassSend
 			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -68,9 +64,7 @@ trait MassSend
 			'json' => [ 'msg_id' => $msg_id ],
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return true;
 	}
@@ -90,9 +84,7 @@ trait MassSend
 			'body' => is_string($message) ? $message : json_encode($message, JSON_UNESCAPED_UNICODE),
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -112,9 +104,7 @@ trait MassSend
 			'json' => [ 'msg_id' => $msg_id ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}

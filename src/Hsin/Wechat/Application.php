@@ -21,6 +21,7 @@ use Hsin\Wechat\Func\Material;
 use Hsin\Wechat\Func\OAuth2;
 use Hsin\Wechat\Func\DataCube;
 use Hsin\Wechat\Func\Semantic;
+use Hsin\Wechat\Func\Exception;
 
 use Hsin\Wechat\Results\Result;
 

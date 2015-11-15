@@ -25,9 +25,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -48,9 +46,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -71,9 +67,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -94,9 +88,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -117,9 +109,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -140,9 +130,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -163,9 +151,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -186,9 +172,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -209,9 +193,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -232,9 +214,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -255,9 +235,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -278,9 +256,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -301,9 +277,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -324,9 +298,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -347,9 +319,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -370,9 +340,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
@@ -393,9 +361,7 @@ trait DataCube
 			'json' => [ 'begin_date' => $begin_date, 'end_date' => $end_date ]
 		]);
 
-		if (property_exists($json, 'errcode') && $json->errcode != 0) {
-			throw new WechatException($json->errmsg, $json->errcode);
-		}
+		$this->exceptionOrNot($json);
 
 		return $json;
 	}
